@@ -9,12 +9,27 @@ class App extends Component {
 
 		this.state = {
 			subreddit: '',
-			data: []
+			data: [],
+			loading: false
 		}
 
 		this.handleSubredditChange = this.handleSubredditChange.bind(this)
 		this.pullSubredditData = this.pullSubredditData.bind(this)
 		this.handleButtonClick = this.handleButtonClick.bind(this)
+	}
+
+	componentDidMount() {
+		// If there are subreddits in the url, use them for search
+		var parts =  window.location.href.split('/');
+		var lastSegment = parts.pop() || parts.pop();
+		console.log(window.location.host, lastSegment, parts.length, !lastSegment.includes(window.host));
+		if (window.location.host && !lastSegment.includes(window.location.host) && lastSegment !== '' && parts.length > 1) {
+
+			this.setState(
+				{ subreddit: lastSegment, loading: true },
+				() => { this.pullSubredditData() }
+			)
+		}
 	}
 
 	render() {
@@ -27,13 +42,23 @@ class App extends Component {
 							<input
 								type="text"
 								name="subreddit"
+								value={this.state.subreddit}
 								onChange={this.handleSubredditChange}
 								placeholder="Subreddit(s)"
 							/>
 							<button type="submit" className="btn btn-primary ml-2" onClick={this.handleButtonClick}>Go</button>
 						</form>
 					</header>
-					<div className="container-fluid">
+					<div className="container-fluid h-100">
+						{
+								this.state.loading ? (
+									<div className="row mt-10">
+										<div className="col-12">
+											<h3 className="text-white-50 font-weight-light">Loading...</h3>
+										</div>
+									</div>
+								) : null
+						}
 						<div className="embed-responsive">
 							{this.getImageRows()}
 						</div>
@@ -102,7 +127,7 @@ class App extends Component {
 					let newData = this.state.data.concat(processed)
 					if (subs.length > 1) newData = this.shuffle(newData)
 
-					this.setState({ data: newData })
+					this.setState({ data: newData, loading: false })
 				})
 				.catch(e => {
 					console.log('error fetching subreddit data', e)
@@ -127,7 +152,7 @@ class App extends Component {
 
 	handleButtonClick(event) {
 		event.preventDefault()
-		this.setState({ data: [] })
+		this.setState({ data: [], loading: true })
 		this.pullSubredditData()
 	}
 
