@@ -37,20 +37,29 @@ class App extends Component {
 		return (
 			<div className="App">
 				<div className="container-fluid mt-3">
-					<header className="App-header">
-						<h1 className="App-title mt-2">Reddit Image Browser</h1>
-						<form>
-							<input
-								type="text"
-								name="subreddit"
-								value={this.state.subreddit}
-								onChange={this.handleSubredditChange}
-								placeholder="Subreddits"
-							/>
-							<button type="submit" className="btn btn-primary ml-2" onClick={this.handleButtonClick}>Go</button>
-						</form>
-					</header>
-					<div className="container-fluid h-100">
+					<div className="row justify-content-center">
+						<h2 className="text-light font-weight-light mt-4 mb-3">Reddit Image Browser</h2>
+					</div>
+					<div className="row justify-content-center">
+						<div className="col-auto">
+							<form className="form-inline justify-content-center">
+								<div className="form-group">
+									<input
+										type="text"
+										name="subreddit"
+										value={this.state.subreddit}
+										onChange={this.handleSubredditChange}
+										placeholder="Subreddits"
+										className="form-control"
+									/>
+								</div>
+								<div className="form-group">
+									<button type="submit" className="btn btn-primary ml-2" onClick={this.handleButtonClick}>Go</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div className="container-fluid h-100 mt-5">
 						{
 							this.state.loading ? (
 								<div className="row mt-10">
