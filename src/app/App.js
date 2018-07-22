@@ -80,7 +80,7 @@ class App extends Component {
 				.get(`https://server-rcafkkgrdr.now.sh/${subs[sub]}`)
 				.then(r => {
 					let processed = r.data.map(x => {
-						let url = x.url;
+						let url = x.url.replace(/^http:\/\//i, 'https://');;
 						if (url.includes('//imgur.com')) {
 							// Make sure it doesnt contain an album
 							if (url.includes('/a/') || url.includes('/gallery/')) {
@@ -99,8 +99,9 @@ class App extends Component {
 					})
 
 					// Combine results from different subreddits and shuffle them
-					const newData = this.shuffle(this.state.data.concat(processed))
-					console.log(newData)
+					let newData = this.state.data.concat(processed)
+					if (subs.length > 1) newData = this.shuffle(newData)
+
 					this.setState({ data: newData })
 				})
 				.catch(e => {
