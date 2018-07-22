@@ -20,10 +20,9 @@ class App extends Component {
 
 	componentDidMount() {
 		// If there are subreddits in the url, use them for search
-		var parts =  window.location.href.split('/');
+		var parts = window.location.href.split('/');
 		var lastSegment = parts.pop() || parts.pop();
-		console.log(window.location.host, lastSegment, parts.length, !lastSegment.includes(window.host));
-		if (window.location.host && !lastSegment.includes(window.location.host) && lastSegment !== '' && parts.length > 1) {
+		if (!lastSegment.includes(window.location.host) && lastSegment !== '' && parts.length > 1) {
 
 			this.setState(
 				{ subreddit: lastSegment, loading: true },
@@ -51,13 +50,13 @@ class App extends Component {
 					</header>
 					<div className="container-fluid h-100">
 						{
-								this.state.loading ? (
-									<div className="row mt-10">
-										<div className="col-12">
-											<h3 className="text-white-50 font-weight-light">Loading...</h3>
-										</div>
+							this.state.loading ? (
+								<div className="row mt-10">
+									<div className="col-12">
+										<h3 className="text-white-50 font-weight-light">Loading...</h3>
 									</div>
-								) : null
+								</div>
+							) : null
 						}
 						<div className="embed-responsive">
 							{this.getImageRows()}
@@ -73,7 +72,7 @@ class App extends Component {
 		return this.state.data.map(d => {
 			if (d.url.includes('.webm') || d.url.includes('.mp4')) {
 				return (
-					<div className="row mt-2" key={d.title} style={{ height: '100vh', position: 'relative'}}>
+					<div className="row mt-2 desktopImageFill" key={d.title}>
 						<div className="col-12">
 							<video controls autoPlay loop muted><source src={d.url}></source></video>
 						</div>
@@ -82,7 +81,7 @@ class App extends Component {
 			} else {
 				if (isImage(d.url)) {
 					return (
-						<div className="row mt-2" key={d.title} style={{ height: '100vh', position: 'relative' }}>
+						<div className="row mt-2 desktopImageFill" key={d.title}>
 							<div className="col-12">
 								<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
 							</div>
@@ -139,16 +138,16 @@ class App extends Component {
 	 * Randomize array element order in-place.
 	 * Using Durstenfeld shuffle algorithm.
 	 */
-	 shuffle(a) {
-	     var j, x, i;
-	     for (i = a.length - 1; i > 0; i--) {
-	         j = Math.floor(Math.random() * (i + 1));
-	         x = a[i];
-	         a[i] = a[j];
-	         a[j] = x;
-	     }
-	     return a;
-	 }
+	shuffle(a) {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+		return a;
+	}
 
 	handleButtonClick(event) {
 		event.preventDefault()

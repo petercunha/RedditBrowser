@@ -2,6 +2,11 @@ html {
 	background-color: #222;
 }
 
+.desktopImageFill {
+	overflow: overlay !important;
+	height: 100vh;
+}
+
 .App {
 	text-align: center;
 	background-color: #222;
