@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import './App.css'
 
+const SERVER_URL = 'https://server-ptggixhuka.now.sh'
+
 class App extends Component {
 	constructor(props) {
 		super(props)
@@ -68,30 +70,8 @@ class App extends Component {
 	}
 
 	getImageRows() {
-		const isImage = url => (url.match(/\.(jpeg|jpg|gif|png)$/) != null)
-		return this.state.data.map(d => {
-			if (d.url.includes('.webm') || d.url.includes('.mp4')) {
-				return (
-					<div className="row mt-2 desktopImageFill" key={d.title}>
-						<div className="col-12">
-							<video controls autoPlay loop muted><source src={d.url}></source></video>
-						</div>
-					</div>
-				)
-			} else {
-				if (isImage(d.url)) {
-					return (
-						<div className="row mt-2 desktopImageFill" key={d.title}>
-							<div className="col-12">
-								<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
-							</div>
-						</div>
-					)
-				} else {
-					return null
-				}
-			}
-		})
+		let html = this.mapRow(this.mapMedia(this.state.data))
+		return html
 	}
 
 	pullSubredditData() {
@@ -101,7 +81,7 @@ class App extends Component {
 
 		for (let sub in subs) {
 			axios
-				.get(`https://server-rcafkkgrdr.now.sh/${subs[sub]}`)
+				.get(`${SERVER_URL}/${subs[sub]}`)
 				.then(r => {
 					let processed = r.data.map(x => {
 						let url = x.url.replace(/^http:\/\//i, 'https://');;
@@ -119,7 +99,7 @@ class App extends Component {
 							let tmp = url.split('//')
 							url = `https://giant.${tmp[1]}.webm`
 						}
-						return { url: url, title: x.title }
+						return { url: url, title: x.title, link: x.link }
 					})
 
 					// Combine results from different subreddits and shuffle them
@@ -133,6 +113,37 @@ class App extends Component {
 				})
 		}
 	}
+
+	isImage = url => (url.match(/\.(jpeg|jpg|gif|png)$/) != null)
+
+	mapRow = (arr) => arr.map(d => {
+		return (
+			<div className="row mt-2 desktopImageFill" key={d}>
+				<div className="col-12">
+					{d}
+				</div>
+			</div>
+		)
+	})
+
+	mapMedia = (arr) => arr.map(d => {
+		console.log(d.link);
+		if (d.url.includes('.webm') || d.url.includes('.mp4')) {
+			return (
+				<video controls autoPlay loop muted><source src={d.url}></source></video>
+			)
+		} else {
+			if (this.isImage(d.url)) {
+				return (
+					<a href={`https://reddit.com${d.link}`} target="_blank">
+						<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
+					</a>
+				)
+			} else {
+				return null
+			}
+		}
+	})
 
 	/**
 	 * Randomize array element order in-place.
