@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import './App.css'
 
+const SERVER_URL = 'https://server-ptggixhuka.now.sh'
+
 class App extends Component {
 	constructor(props) {
 		super(props)
@@ -68,13 +70,15 @@ class App extends Component {
 	}
 
 	getImageRows() {
-		const isImage = url => (url.match(/\.(jpeg|jpg|gif|png)$/) != null)
+		const isImage = url => (url.match(/\.(jpeg|jpg|gif|png|)$/) != null)
 		return this.state.data.map(d => {
 			if (d.url.includes('.webm') || d.url.includes('.mp4')) {
 				return (
 					<div className="row mt-2 desktopImageFill" key={d.title}>
 						<div className="col-12">
-							<video controls autoPlay loop muted><source src={d.url}></source></video>
+							<video controls autoPlay loop muted title={d.title}>
+								<source src={d.url} />
+							</video>
 						</div>
 					</div>
 				)
@@ -83,7 +87,9 @@ class App extends Component {
 					return (
 						<div className="row mt-2 desktopImageFill" key={d.title}>
 							<div className="col-12">
-								<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
+								<a href={d.link} target="_blank">
+									<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
+								</a>
 							</div>
 						</div>
 					)
@@ -101,7 +107,7 @@ class App extends Component {
 
 		for (let sub in subs) {
 			axios
-				.get(`https://server-rcafkkgrdr.now.sh/${subs[sub]}`)
+				.get(`${SERVER_URL}/${subs[sub]}`)
 				.then(r => {
 					let processed = r.data.map(x => {
 						let url = x.url.replace(/^http:\/\//i, 'https://');;
@@ -109,7 +115,7 @@ class App extends Component {
 							// Make sure it doesnt contain an album
 							if (url.includes('/a/') || url.includes('/gallery/')) {
 								// Return a blank pixel
-								return { url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', title: x.title }
+								return { url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', title: '', link: '' }
 							}
 
 							let tmp = url.split('//')
@@ -119,7 +125,7 @@ class App extends Component {
 							let tmp = url.split('//')
 							url = `https://giant.${tmp[1]}.webm`
 						}
-						return { url: url, title: x.title }
+						return { url: url, title: x.title, link: x.link }
 					})
 
 					// Combine results from different subreddits and shuffle them
