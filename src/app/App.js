@@ -118,6 +118,7 @@ class App extends Component {
 			axios
 				.get(`${SERVER_URL}/${subs[sub]}`)
 				.then(r => {
+					// eslint-disable-next-line
 					let processed = r.data.map(x => {
 						let url = x.url.replace(/^http:\/\//i, 'https://');;
 						if (url.includes('//imgur.com')) {
