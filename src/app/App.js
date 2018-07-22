@@ -44,7 +44,7 @@ class App extends Component {
 								name="subreddit"
 								value={this.state.subreddit}
 								onChange={this.handleSubredditChange}
-								placeholder="Subreddit(s)"
+								placeholder="Subreddits"
 							/>
 							<button type="submit" className="btn btn-primary ml-2" onClick={this.handleButtonClick}>Go</button>
 						</form>
