@@ -87,7 +87,7 @@ class App extends Component {
 					return (
 						<div className="row mt-2 desktopImageFill" key={d.title}>
 							<div className="col-12">
-								<a href={d.link} target="_blank">
+								<a href={`https://reddit.com${d.link}`} target="_blank">
 									<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
 								</a>
 							</div>
