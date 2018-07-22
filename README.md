@@ -6,6 +6,7 @@ This is a little project I hacked together because I noticed that most Reddit im
 
 [**Click here to try out the site**](https://redditbrowser.surge.sh)
 
+#
 
 ### Features
 - Fully encrypted HTTPS (all non-secure links are filtered)
