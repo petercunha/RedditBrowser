@@ -70,8 +70,34 @@ class App extends Component {
 	}
 
 	getImageRows() {
-		let html = this.mapRow(this.mapMedia(this.state.data))
-		return html
+		const isImage = url => (url.match(/\.(jpeg|jpg|gif|png|)$/) != null)
+		return this.state.data.map(d => {
+			if (d.url.includes('.webm') || d.url.includes('.mp4')) {
+				return (
+					<div className="row mt-2 desktopImageFill" key={d.title}>
+						<div className="col-12">
+							<video controls autoPlay loop muted title={d.title}>
+								<source src={d.url} />
+							</video>
+						</div>
+					</div>
+				)
+			} else {
+				if (isImage(d.url)) {
+					return (
+						<div className="row mt-2 desktopImageFill" key={d.title}>
+							<div className="col-12">
+								<a href={d.link} target="_blank">
+									<img src={d.url} title={d.title} alt={d.title} style={{ height: '100%', verticalAlign: 'top' }} />
+								</a>
+							</div>
+						</div>
+					)
+				} else {
+					return null
+				}
+			}
+		})
 	}
 
 	pullSubredditData() {
@@ -89,7 +115,7 @@ class App extends Component {
 							// Make sure it doesnt contain an album
 							if (url.includes('/a/') || url.includes('/gallery/')) {
 								// Return a blank pixel
-								return { url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', title: x.title }
+								return { url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', title: '', link: '' }
 							}
 
 							let tmp = url.split('//')
