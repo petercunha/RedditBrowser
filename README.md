@@ -4,6 +4,7 @@
 
 This is a little project I hacked together because I noticed that most Reddit image viewer sites weren't very good. Please report bugs and suggest features in the 'Issues' tab.
 
+[**Click here to try out the site**](https://redditbrowser.surge.sh)
 
 
 ### Features
