@@ -3,9 +3,10 @@ import axios from 'axios'
 
 import './App.css'
 
-const SERVER_URL = 'https://server-ptggixhuka.now.sh'
+const SERVER_URL = 'https://server-xtlltnmecm.now.sh'
 
 class App extends Component {
+
 	constructor(props) {
 		super(props)
 
