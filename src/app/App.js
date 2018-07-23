@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import './App.css'
 
-const SERVER_URL = 'https://server-xtlltnmecm.now.sh'
+const SERVER_URL = 'https://redditbrowser.now.sh'
 
 class App extends Component {
 
@@ -120,7 +120,7 @@ class App extends Component {
 
 		for (let sub in subs) {
 			axios
-				.get(`${SERVER_URL}/${subs[sub]}`)
+				.post(`${SERVER_URL}/search`, { query: subs[sub] })
 				.then(r => {
 					// eslint-disable-next-line
 					let processed = r.data.map(x => {

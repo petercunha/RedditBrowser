@@ -9,10 +9,13 @@ router.get('/', function (req, res, next) {
 })
 
 /* GET subreddit */
-router.get('/:subreddit', function (req, res, next) {
+router.post('/:subreddit', function (req, res, next) {
 	try {
+		let subreddit = req.body.query
+		console.log(`Requesting https://www.reddit.com/r/${subreddit}.json`);
+
 		axios
-			.get(`https://www.reddit.com/r/${req.params.subreddit}.json`)
+			.get(`https://www.reddit.com/r/${subreddit}.json`)
 			.then(
 				r => {
 					const json = r.data
