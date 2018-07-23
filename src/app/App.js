@@ -23,12 +23,13 @@ class App extends Component {
 
 	componentDidMount() {
 		// If there are subreddits in the url, use them for search
-		var parts = window.location.href.split('/');
-		var lastSegment = parts.pop() || parts.pop();
-		if (!lastSegment.includes(window.location.host) && lastSegment !== '' && parts.length > 1) {
+		let url = new URL(window.location.href)
+		let searchParams = new URLSearchParams(url.search)
+		let query = searchParams.get('r')
 
+		if (query) {
 			this.setState(
-				{ subreddit: lastSegment, loading: true },
+				{ subreddit: query, loading: true },
 				() => { this.pullSubredditData() }
 			)
 		}
@@ -111,6 +112,8 @@ class App extends Component {
 	}
 
 	pullSubredditData() {
+		window.history.pushState({}, this.state.subreddit, `?r=${this.state.subreddit}`);
+
 		// Split by commas and spaces
 		let subs = this.state.subreddit.split(',')
 		if (subs.length === 1) subs = this.state.subreddit.split(' ')
