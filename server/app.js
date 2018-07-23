@@ -10,7 +10,7 @@ const indexRouter = require('./routes/index')
 var app = express()
 
 app.use(compression())
-app.use(logger('common'))
+app.use(logger('tiny'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
