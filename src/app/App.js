@@ -118,6 +118,9 @@ class App extends Component {
 		let subs = this.state.subreddit.split(',')
 		if (subs.length === 1) subs = this.state.subreddit.split(' ')
 
+		// Array of JSON arrays. We will shuffle this together later.
+		let stack2d = []
+
 		for (let sub in subs) {
 			axios
 				.post(`${SERVER_URL}/search`, { query: subs[sub] })
@@ -141,12 +144,13 @@ class App extends Component {
 						}
 						return { url: url, title: x.title, link: x.link }
 					})
+					stack2d.push(processed)
 
-					// Combine results from different subreddits and shuffle them
-					let newData = this.state.data.concat(processed)
-					if (subs.length > 1) newData = this.shuffle(newData)
-
-					this.setState({ data: newData, loading: false })
+					// Only setState when all subreddit data has been pulled
+					if (stack2d.length === subs.length) {
+						let finalData = this.shuffleCombine(stack2d)
+						this.setState({ data: finalData, loading: false })
+					}
 				})
 				.catch(e => {
 					console.log('error fetching subreddit data', e)
@@ -198,6 +202,19 @@ class App extends Component {
 			a[j] = x;
 		}
 		return a;
+	}
+
+	shuffleCombine(a) {
+		let arr = []
+		for (let e = 0; e < 50; e++) {
+			for (let i = 0; i < a.length; i++) {
+				let post = a[i][e]
+				if (post) {
+					arr.push(post)
+				}
+			}
+		}
+		return arr
 	}
 
 	handleButtonClick(event) {
