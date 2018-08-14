@@ -14,8 +14,8 @@ A simple full screen image and video browser for Reddit. This is a little projec
 - Responsive design, media elements are positioned to use your full view height.
 
 ### Try it out
-- [Nature Pictures](https://redditbrowser.surge.sh/natureporn)
-- [Nature and Space Photography](https://redditbrowser.surge.sh/earthporn,spaceporn)
-- [Wallpapers](https://redditbrowser.surge.sh/wallpapers)
+- [Nature Pictures](https://redditbrowser.surge.sh/?r=natureporn)
+- [Nature and Space Photography](https://redditbrowser.surge.sh/?r=earthporn,spaceporn)
+- [Wallpapers](https://redditbrowser.surge.sh/?r=wallpapers)
 
 Pull requests welcome!
